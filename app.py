@@ -13,6 +13,9 @@ genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 app = Flask(__name__)
 
+FARMER_NEWS = []
+
+
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
@@ -35,6 +38,29 @@ def save_to_history(user, ai):
 
 def clear_history():
     open(HISTORY_FILE, "w").close()
+
+#for news 
+def generate_farmer_news():
+    global FARMER_NEWS
+
+    prompt = """
+Generate 10 short news updates for Indian farmers in Hindi.
+Rules:
+- One line per news
+- Very simple Hindi
+- Practical farming related
+- No numbering
+- No special characters
+- Plain text only
+"""
+
+    model = genai.GenerativeModel("gemini-2.5-flash")
+    response = model.generate_content(prompt).text
+
+    # convert response into list
+    news_list = [n.strip() for n in response.split("\n") if n.strip()]
+
+    FARMER_NEWS = news_list[:10]
 
 
 # ------------------------
@@ -149,6 +175,18 @@ def getdata():
         return jsonify(data)
     except:
         return jsonify({"error": "ESP not reachable"})
+
+
+@app.route("/farmer-news")
+def farmer_news():
+    if not FARMER_NEWS:
+        generate_farmer_news()
+
+    return jsonify({
+        "news": FARMER_NEWS,
+        "count": len(FARMER_NEWS)
+    })
+
 
 
 if __name__ == "__main__":
