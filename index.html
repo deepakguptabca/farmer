@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ai Assist System</title>
+
+    <!-- Modern font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --bg: #0f1724;
+        --card: #0b1220;
+        --muted: #9aa4b2;
+        --accent: linear-gradient(135deg, #22c1c3, #3b82f6);
+        --success: #16a34a;
+        --danger: #ef4444;
+        --glass: rgba(255, 255, 255, 0.04);
+        --glass-2: rgba(255, 255, 255, 0.03);
+        --glass-border: rgba(255, 255, 255, 0.06);
+        --radius: 14px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family:
+          "Inter",
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          "Helvetica Neue",
+          Arial;
+        background:
+          radial-gradient(
+            1200px 400px at 10% 10%,
+            rgba(59, 130, 246, 0.06),
+            transparent
+          ),
+          var(--bg);
+        color: #e6eef8;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        padding: 8px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .wrapper {
+        width: 100%;
+        max-width: 1200px;
+      }
+
+      header.app-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 5px;
+      }
+      .brand {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+      }
+      .logo {
+        width: 56px;
+        height: 56px;
+        border-radius: 12px;
+        background: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        font-weight: 700;
+        color: #fff;
+        box-shadow: 0 6px 24px rgba(59, 130, 246, 0.18);
+      }
+      h1 {
+        font-size: 20px;
+        margin: 0;
+      }
+      p.lead {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      main.grid {
+        display: grid;
+        grid-template-columns: 420px 1fr;
+        gap: 22px;
+      }
+
+      /* Dashboard card */
+      .card {
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.02),
+          transparent
+        );
+        border: 1px solid var(--glass-border);
+        border-radius: var(--radius);
+        padding: 18px;
+        box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
+      }
+
+      .dashboard h2 {
+        margin: 0 0 12px 0;
+        font-size: 16px;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .stat {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        background: linear-gradient(180deg, var(--glass), var(--glass-2));
+        border-radius: 12px;
+        padding: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.03);
+      }
+
+      .circle {
+        width: 84px;
+        height: 84px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: conic-gradient(#4caf50 0deg, #2b3946 0deg);
+        flex-shrink: 0;
+        position: relative;
+        box-shadow: inset 0 -6px 20px rgba(0, 0, 0, 0.35);
+      }
+      .inner {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: transparent;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+      }
+      .stat-body h3 {
+        margin: 0;
+        font-size: 13px;
+      }
+      .stat-body .value {
+        font-size: 20px;
+        font-weight: 600;
+        margin-top: 6px;
+      }
+
+      .pump {
+        margin-top: 14px;
+        padding: 12px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: linear-gradient(90deg, rgba(0, 0, 0, 0.12), transparent);
+        border: 1px solid rgba(255, 255, 255, 0.03);
+      }
+      .pump .status {
+        font-weight: 700;
+        letter-spacing: 0.6px;
+      }
+
+      /* Chat card */
+      .chat-wrap {
+        display: flex;
+        flex-direction: column;
+        height: 78vh;
+        min-height: 520px;
+      }
+      .chat-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 6px;
+      }
+      .chat-box {
+        flex: 1;
+        overflow: auto;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.01),
+          transparent
+        );
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.02);
+        margin-bottom: 12px;
+      }
+
+      .msg {
+        max-width: 78%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        line-height: 1.4;
+        word-wrap: break-word;
+      }
+      .user {
+        align-self: flex-end;
+        background: linear-gradient(90deg, #10b981, #059669);
+        color: white;
+        border-bottom-right-radius: 6px;
+      }
+      .bot {
+        align-self: flex-start;
+        background: linear-gradient(90deg, #111827, #1f2937);
+        color: #e6eef8;
+        border-bottom-left-radius: 6px;
+        border: 1px solid rgba(255, 255, 255, 0.03);
+      }
+
+      .input-area {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        background: transparent;
+      }
+      .input-area input {
+        flex: 1;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: transparent;
+        color: #e6eef8;
+        outline: none;
+        font-size: 14px;
+      }
+      .btn {
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        justify-content: center;
+        box-shadow: 0 6px 18px rgba(2, 6, 23, 0.6);
+      }
+      .send {
+        background: linear-gradient(90deg, #3b82f6, #06b6d4);
+        color: white;
+      }
+      .mic {
+        background: linear-gradient(90deg, #6366f1, #8b5cf6);
+        color: white;
+      }
+      .clear {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        color: var(--muted);
+      }
+      .news-strip {
+        width: 100%;
+        height: 45px;
+        margin: 10px;
+        overflow: hidden;
+        background: linear-gradient(90deg, #0b1220, #0e1a2f, #0b1220);
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        display: flex;
+        align-items: center;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      .news-track {
+        display: inline-block;
+        white-space: nowrap;
+        padding-left: 100%;
+        animation: scrollNews 45s linear infinite;
+        color: #e5ecff;
+        font-size: 17px;
+      }
+
+      .news-track span {
+        margin-right: 60px;
+      }
+
+      @keyframes scrollNews {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-100%);
+        }
+      }
+
+      /* small screens */
+      @media (max-width: 1000px) {
+        main.grid {
+          grid-template-columns: 1fr;
+          padding-bottom: 20px;
+        }
+        .chat-wrap {
+          height: auto;
+          min-height: 440px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <header class="app-header">
+        <div class="brand">
+          <div class="logo">FG</div>
+          <div>
+            <h1>Farmer Field AI</h1>
+            <p class="lead">
+              Smart irrigation monitoring • Voice chat assistant
+            </p>
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center">
+          <button class="btn clear" id="clearBtn" onclick="clearChat()">
+            Clear
+          </button>
+        </div>
+      </header>
+
+      <!-- news section -->
+      <section class="news-section">
+        <div class="news-strip">
+          <div class="news-track" id="news-track">
+            <span>🌾 किसान समाचार लोड हो रहे हैं...</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- main content -->
+      <main class="grid">
+        <!-- left: dashboard -->
+        <section class="card dashboard">
+          <h2>Smart Irrigation Dashboard</h2>
+
+          <div class="stats" style="margin-top: 12px">
+            <div class="stat">
+              <div class="circle" id="moistureCircle">
+                <div class="inner" id="moistureEmoji">💧</div>
+              </div>
+              <div class="stat-body">
+                <h3>Soil Moisture</h3>
+                <div class="value"><span id="moistureValue">0</span>%</div>
+              </div>
+            </div>
+
+            <div class="stat">
+              <div class="circle" id="humidityCircle">
+                <div class="inner" id="humidityEmoji">🌫️</div>
+              </div>
+              <div class="stat-body">
+                <h3>Air Humidity</h3>
+                <div class="value"><span id="humidityValue">0</span>%</div>
+              </div>
+            </div>
+
+            <div class="stat">
+              <div class="circle" id="temperatureCircle">
+                <div class="inner" id="tempEmoji">🌡️</div>
+              </div>
+              <div class="stat-body">
+                <h3>Temperature</h3>
+                <div class="value"><span id="temperatureValue">0</span>°C</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pump" style="margin-top: 14px">
+            <div>
+              <div style="font-size: 13px; color: var(--muted)">
+                Pump Status
+              </div>
+              <div class="status" id="pumpStatus">OFF</div>
+            </div>
+            <div
+              style="text-align: right; color: var(--muted); font-size: 13px"
+            >
+              Last update: <span id="lastUpdate">--</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- right: chat -->
+        <section class="card chat-wrap">
+          <div class="chat-header">
+            <div>
+              <h2 style="margin: 0">Farmer AI Chatbot</h2>
+              <div style="font-size: 13px; color: var(--muted)">
+                Voice enabled • Hindi (hi‑IN)
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px">
+              <!-- ADD this near mic button -->
+              <button class="btn mic" onclick="openCamera()">📷</button>
+              <input
+                type="file"
+                id="leafInput"
+                accept="image/*"
+                style="display: none"
+              />
+              <button class="btn mic" onclick="startListening()">Voice</button>
+              <button class="btn send" onclick="sendMessage()">Send</button>
+            </div>
+          </div>
+
+          <div class="chat-box" id="chatBox"></div>
+
+          <div class="input-area" style="margin-top: 8px">
+            <input
+              type="text"
+              id="userInput"
+              placeholder="Type or speak your question..."
+              autocomplete="off"
+            />
+            <button class="btn mic" onclick="startListening()">🎤</button>
+            <button class="btn send" onclick="sendMessage()">➤</button>
+          </div>
+        </section>
+      </main>
+
+      <footer
+        style="
+          margin-top: 18px;
+          text-align: center;
+          color: var(--muted);
+          font-size: 13px;
+        "
+      >
+        Developed by Deepak Gupta BCA | For: Govt PG College Sec 9 (Gurugram)
+      </footer>
+    </div>
+
+    <script>
+      const chatBox = document.getElementById("chatBox");
+      const input = document.getElementById("userInput");
+
+      function appendMessage(sender, text) {
+        const div = document.createElement("div");
+        div.className = "msg " + sender;
+        div.textContent = text;
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      async function sendMessage() {
+        const message = input.value.trim();
+        if (!message) return;
+        appendMessage("user", message);
+        input.value = "";
+        try {
+          const res = await fetch("/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message }),
+          });
+          const data = await res.json();
+          const reply = data.reply || "⚠️ Error getting reply";
+          appendMessage("bot", reply);
+          speakText(reply);
+        } catch (e) {
+          appendMessage("bot", "⚠️ Failed to reach server");
+        }
+      }
+
+      function speakText(text) {
+        if (!window.speechSynthesis) return;
+        const speech = new SpeechSynthesisUtterance();
+        speech.text = text;
+        speech.lang = "hi-IN";
+        speech.rate = 1;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(speech);
+      }
+
+      function startListening() {
+        const SpeechRec =
+          window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRec) {
+          alert("Speech recognition not supported in this browser");
+          return;
+        }
+        const recognition = new SpeechRec();
+        recognition.lang = "hi-IN";
+        recognition.start();
+        recognition.onresult = function (event) {
+          const transcript = event.results[0][0].transcript;
+          input.value = transcript;
+          sendMessage();
+        };
+        recognition.onerror = function (e) {
+          console.warn("Recognition error", e);
+        };
+      }
+
+      async function clearChat() {
+        if (!confirm("Clear chat history for everyone on this server?")) return;
+        const btn = document.getElementById("clearBtn");
+        btn.disabled = true;
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
+        try {
+          const res = await fetch("/clear", { method: "POST" });
+          const data = await res.json();
+          chatBox.innerHTML = "";
+          const note = document.createElement("div");
+          note.className = "msg bot";
+          note.textContent = data.status || "Chat cleared";
+          chatBox.appendChild(note);
+        } catch (e) {
+          alert("Failed to clear chat");
+        } finally {
+          btn.disabled = false;
+        }
+      }
+
+      async function updateDashboard() {
+        try {
+          const res = await fetch("/getdata");
+          const data = await res.json();
+          const soil = Number(data.soil || 0);
+          const humidity = Number(data.humidity || 0);
+          const temp = Number(data.temperature || 0);
+          const pump = data.pump || "off";
+
+          document.getElementById("moistureValue").innerText = soil;
+          document.getElementById("humidityValue").innerText = humidity;
+          document.getElementById("temperatureValue").innerText = temp;
+          document.getElementById("pumpStatus").innerText =
+            String(pump).toUpperCase();
+          document.getElementById("lastUpdate").innerText =
+            new Date().toLocaleTimeString();
+
+          let soilDeg = Math.min(Math.max(soil, 0), 100) * 3.6;
+          let humDeg = Math.min(Math.max(humidity, 0), 100) * 3.6;
+          let tempDeg = Math.min(Math.max(temp, 0), 120) * 3.0;
+
+          document.getElementById("moistureCircle").style.background =
+            `conic-gradient(#16a34a ${soilDeg}deg, #11202a ${soilDeg}deg)`;
+          document.getElementById("humidityCircle").style.background =
+            `conic-gradient(#06b6d4 ${humDeg}deg, #11202a ${humDeg}deg)`;
+          document.getElementById("temperatureCircle").style.background =
+            `conic-gradient(#fb923c ${Math.min(
+              tempDeg,
+              360,
+            )}deg, #11202a ${Math.min(tempDeg, 360)}deg)`;
+
+          document.getElementById("moistureEmoji").innerText =
+            soil < 30 ? "🥀" : soil < 60 ? "🌿" : "💧";
+          document.getElementById("humidityEmoji").innerText =
+            humidity < 40 ? "🔥" : humidity < 70 ? "🌤️" : "🌫️";
+          document.getElementById("tempEmoji").innerText =
+            temp < 15 ? "❄️" : temp < 32 ? "🌡️" : "🥵";
+        } catch (e) {
+          console.log("not connected to esp32");
+        }
+      }
+
+      setInterval(updateDashboard, 5000);
+      updateDashboard();
+    </script>
+
+    <script>
+      fetch("/farmer-news")
+        .then((res) => res.json())
+        .then((data) => {
+          const track = document.getElementById("news-track");
+          track.innerHTML = "";
+
+          data.news.forEach((n) => {
+            const span = document.createElement("span");
+            span.innerText = "🌾 " + n;
+            track.appendChild(span);
+          });
+        });
+    </script>
+
+    <script>
+      const leafInput = document.getElementById("leafInput");
+
+      function openCamera() {
+        leafInput.click();
+      }
+
+      leafInput.addEventListener("change", async () => {
+        const file = leafInput.files[0];
+        if (!file) return;
+
+        appendMessage("user", "पत्ता उप्लोडेड");
+
+        const formData = new FormData();
+        formData.append("leaf", file);
+        formData.append("language", "hi-IN");
+
+        try {
+          const res = await fetch("/leaf", {
+            method: "POST",
+            body: formData,
+          });
+          const data = await res.json();
+          appendMessage("bot", data.reply || "⚠️ Unable to analyze leaf");
+          speakText(data.reply);
+        } catch {
+          appendMessage("bot", "⚠️ Leaf analysis failed");
+        }
+      });
+    </script>
+  </body>
+</html>
