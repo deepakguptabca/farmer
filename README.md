@@ -27,6 +27,11 @@ The system collects real-time data from the field and displays it on a dashboard
 - Smart scarecrow with motion detection
 - Data logging for water usage analysis
 
+  ![farmer_1](https://github.com/user-attachments/assets/b6191d1b-e9ed-42f3-bac9-fe3b7e19e4a5)
+  ![image 2 (1)](https://github.com/user-attachments/assets/35692a16-2839-4b20-97ab-fbf8fbcd7c49)
+
+
+
 ---
 
 ## Technologies Used
@@ -85,6 +90,11 @@ The system collects real-time data from the field and displays it on a dashboard
 
 Smart Farmer Assistant is a step towards modern and sustainable agriculture.  
 It combines IoT, automation, and AI to support farmers and improve productivity.
+
+![IMG-20260201-WA0002](https://github.com/user-attachments/assets/e6747c6d-4c73-4831-a82a-214e70c1c432)
+![certificate](https://github.com/user-attachments/assets/6fa15325-146e-4632-b4e5-649b3b9f8e14)
+
+
 
 ---
 
