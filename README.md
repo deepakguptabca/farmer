@@ -1,6 +1,8 @@
-# Smart Farmer Assistant
+# Smart Farmer Assistant (AgroAI)
 
 An AI-Based Smart Irrigation and Crop Protection System designed to help farmers save water, protect crops, and make better farming decisions using real-time data and automation.
+
+![20260131_181519](https://github.com/user-attachments/assets/1d51a96c-4712-45ea-9c28-a133c183b4d0)
 
 ---
 
